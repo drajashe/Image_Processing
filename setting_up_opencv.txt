@@ -1,0 +1,78 @@
+Adding OpenCV 4.1.2 to Visual Studio 2019 Project in Windows using Pre-built binaries
+https://medium.com/@subwaymatch/opencv-410-with-vs-2019-3d0bc0c81d96
+
+Note: This uses an older version (4.1.2) of OpenCV. A newer version (4.2.0) with many new features has been released. Unless you have a very specific reason to stick to version 4.1.2, you should use the 4.2.0 version. Please refer to https://medium.com/@subwaymatch/adding-opencv-4-2-0-to-visual-studio-2019-project-in-windows-using-pre-built-binaries-93a851ed6141 for an updated tutorial on adding the newer version to Visual Studio 2019.
+For some reason, the official documentation for OpenCV 4.1.2 has vastly outdated contents on setting up OpenCV for Visual Studio (for C++). So, let’s take a quick dive into how to setup OpenCV 4.1.2 on Visual Studio 2019.
+Environment
+Windows 10 (64-bit)
+Visual Studio 2019
+
+To use OpenCV with Visual Studio 2019 (using C++), be sure to select Desktop development with C++ during install
+Step 1: Download and extract the pre-built library
+Download the latest binary from opencv’s Github repository. The latest version as of October 17, 2019 is 4.1.2 (opencv-4.1.2-vc14_vc15.exe). Release files for 4.1.2 are listed at https://github.com/opencv/opencv/releases/tag/4.1.2.
+
+Github Release Page
+Run the downloaded .exe file to extract the archive.
+For the sake of uniformity, this tutorial will assume that you’ve extracted the contents to c:\.
+
+Extract to C:\
+
+Extracted OpenCV directory in C:\
+Step 2: Add to path
+Add opencv’s bin directory to path.
+
+Add to path
+Step 3: Create a project in Visual Studio 2019
+In this step, we’re creating a new project in Visual Studio 2019. Note that the settings we set below are only applied to the new project. If you create a new project, you’ll need to repeat the steps below.
+
+Create a new project
+
+Choose Console App
+Wait, what if I don’t see the “Console App” option in the previous step?
+If you don’t see the “Console App” option in “Create a new project” window, it’s because you haven’t installed the required components for C++ development.
+Click on Install more tools and features, and install Desktop development with C++ workload module.
+
+If you don’t see the project template, click on Install more tools and features
+
+Install Desktop development with C++ workload module
+Configure your project and continue. You can name the project however you’d like.
+
+Configure project
+
+New Project Window
+Before we go any further, I want to outline the steps we’re taking and why we are performing each step.
+Set platform target to x64 — Pre-built binaries are built for x64 Windows platforms.
+Add to Include Directories —Tell the compiler how the OpenCV library looks. This is done by providing a path to the header files (build/include).¹
+Add to Library Directories — Tell the linker where it can find the lib files for different modules.
+Add Additional Dependencies — List .lib files for different modules. Note that we’re only going to list a single all-in-one file named opencv_world.
+Let’s move on. First, set platform target to x64.
+
+Set platform target to x64
+Now, go to Project → YourProjectName properties in menu.
+
+Project Properties
+Once new window opens up, go to VC++ Directories on the left and click on Include Directories row. Once you see the down arrow on the rightmost part of the row, click on the arrow, and select <Edit…>.
+
+VC++ Directories Tab
+In Include Directories window, add c:\opencv\build\include.
+
+Add c:\opencv\build\include
+Click OK. In the same tab, look for Library Directories. Again, click on the down arrow and select <Edit…>.
+
+Again, in VC++ Directories tab, but a different item
+
+Add c:\opencv\build\x64\vc15\lib
+The VC++ Directories tab should look like below:
+
+It’s time to list the module dependencies. As mentioned above, we are only going to add a single all-in-one module named opencv_world.
+
+Linker — Input — Additional Dependencies
+
+Add opencv_world412d.lib
+We now should be ready to write some OpenCV code and see it in action.
+Step 4: Check out demo code!
+Copy and paste the code below and press F5 to run (or click on the Run button with the label “Local Windows Debugger”.
+
+
+Code
+
